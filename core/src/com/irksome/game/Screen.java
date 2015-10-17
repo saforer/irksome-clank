@@ -2,10 +2,8 @@ package com.irksome.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 
 /**
  * Created by Forer on 10/16/2015.
@@ -14,10 +12,13 @@ import com.badlogic.gdx.math.Vector2;
 
 
 public class Screen {
-    int arrayWid = 27, arrayHei = 18;
+    int arrayWid = 10, arrayHei = 10;
     Tile[][] tileArray = new Tile[arrayWid][arrayHei];
+
+    //player temp info
     int selectedx = 0;
     int selectedy = 0;
+    Texture playerSprite = new Texture("MobSpritesFull.png");
 
     public Screen() {
         for (int x = 0; x < arrayWid; x++) {
@@ -26,7 +27,7 @@ public class Screen {
             }
         }
 
-        tileArray[selectedx][selectedy].selected = true;
+        tileArray[selectedx][selectedy].player = true;
     }
 
 
@@ -39,12 +40,13 @@ public class Screen {
                 Texture toDraw = t.background;
                 int x = ((xx * t.width)  - (arrayWid * (t.width/2 ))) + (Gdx.graphics.getWidth() / 2) - t.width/2;
                 int y = ((yy * t.height) - (arrayHei * (t.height/2))) + (Gdx.graphics.getHeight() / 2) - t.height/2;
-                if (!t.selected) {
-                    sb.setColor(Color.WHITE);
-                } else {
-                    sb.setColor(Color.BLACK);
-                }
+
                 sb.draw(toDraw, x, y);
+
+                x = ((selectedx * t.width)  - (arrayWid * (t.width/2 ))) + (Gdx.graphics.getWidth() / 2) - t.width/2;
+                y = ((selectedy * t.height) - (arrayHei * (t.height/2))) + (Gdx.graphics.getHeight() / 2) - t.height/2;
+
+                sb.draw(playerSprite, x, y);
             }
         }
 
@@ -52,32 +54,40 @@ public class Screen {
     }
 
     public void update(float dt) {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
-            if (selectedx > 0) {
-                tileArray[selectedx][selectedy].selected = false;
-                selectedx--;
-                tileArray[selectedx][selectedy].selected = true;
-            }
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
-            if (selectedx < arrayWid - 1) {
-                tileArray[selectedx][selectedy].selected = false;
-                selectedx++;
-                tileArray[selectedx][selectedy].selected = true;
-            }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
+            playerMoveRight();
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
+            playerMoveLeft();
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
-            if (selectedy > 0) {
-                tileArray[selectedx][selectedy].selected = false;
-                selectedy--;
-                tileArray[selectedx][selectedy].selected = true;
-            }
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
-            if (selectedy < arrayHei - 1) {
-                tileArray[selectedx][selectedy].selected = false;
-                selectedy++;
-                tileArray[selectedx][selectedy].selected = true;
-            }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+            playerMoveUp();
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
+            playerMoveDown();
+        }
+    }
+
+    void playerMoveRight() {
+        if (selectedx < arrayWid -1) {
+            selectedx++;
+        }
+    }
+
+    void playerMoveLeft() {
+        if (selectedx > 0) {
+            selectedx--;
+        }
+    }
+
+    void playerMoveUp() {
+        if (selectedy < arrayHei -1) {
+            selectedy++;
+        }
+    }
+
+    void playerMoveDown() {
+        if (selectedy > 0) {
+            selectedy--;
         }
     }
 }

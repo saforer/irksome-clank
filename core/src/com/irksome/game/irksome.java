@@ -17,7 +17,6 @@ public class irksome extends ApplicationAdapter {
 	public void create () {
 		currentScreen = new Screen();
 		sb = new SpriteBatch();
-		img = new Texture("exampletile.png");
 	}
 
 	@Override
