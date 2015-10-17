@@ -9,10 +9,12 @@ public class GameObject {
     Texture img;
     int x;
     int y;
-    public GameObject (Texture img, int x, int y) {
+    public static Screen screen;
+    public GameObject (Texture img, int x, int y, Screen screen) {
         this.img = img;
         this.x = x;
         this.y = y;
+        this.screen = screen;
     }
 
     public void Move(Directions dir) {
