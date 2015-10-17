@@ -16,18 +16,17 @@ public class Screen {
     Tile[][] tileArray = new Tile[arrayWid][arrayHei];
 
     //player temp info
-    int selectedx = 0;
-    int selectedy = 0;
-    Texture playerSprite = new Texture("MobSpritesFull.png");
+    Player player;
 
     public Screen() {
+
         for (int x = 0; x < arrayWid; x++) {
             for (int y = 0; y < arrayHei; y++) {
                 tileArray[x][y] = new Tile();
             }
         }
 
-        tileArray[selectedx][selectedy].player = true;
+        player = new Player(new Texture("MobSpritesFull.png"), 0, 0);
     }
 
 
@@ -43,10 +42,10 @@ public class Screen {
 
                 sb.draw(toDraw, x, y);
 
-                x = ((selectedx * t.width)  - (arrayWid * (t.width/2 ))) + (Gdx.graphics.getWidth() / 2) - t.width/2;
-                y = ((selectedy * t.height) - (arrayHei * (t.height/2))) + (Gdx.graphics.getHeight() / 2) - t.height/2;
+                x = ((player.x * t.width)  - (arrayWid * (t.width/2 ))) + (Gdx.graphics.getWidth() / 2) - t.width/2;
+                y = ((player.y * t.height) - (arrayHei * (t.height/2))) + (Gdx.graphics.getHeight() / 2) - t.height/2;
 
-                sb.draw(playerSprite, x, y);
+                sb.draw(player.img, x, y);
             }
         }
 
@@ -55,39 +54,23 @@ public class Screen {
 
     public void update(float dt) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
-            playerMoveRight();
+            if (player.x < arrayHei -1) {
+                player.Move(Directions.RIGHT);
+            }
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
-            playerMoveLeft();
+            if (player.x > 0) {
+                player.Move(Directions.LEFT);
+            }
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
-            playerMoveUp();
+            if (player.y < arrayHei -1) {
+                player.Move(Directions.UP);
+            }
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
-            playerMoveDown();
-        }
-    }
-
-    void playerMoveRight() {
-        if (selectedx < arrayWid -1) {
-            selectedx++;
-        }
-    }
-
-    void playerMoveLeft() {
-        if (selectedx > 0) {
-            selectedx--;
-        }
-    }
-
-    void playerMoveUp() {
-        if (selectedy < arrayHei -1) {
-            selectedy++;
-        }
-    }
-
-    void playerMoveDown() {
-        if (selectedy > 0) {
-            selectedy--;
+            if (player.y > 0) {
+                player.Move(Directions.DOWN);
+            }
         }
     }
 }
