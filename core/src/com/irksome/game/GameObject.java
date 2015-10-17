@@ -14,4 +14,21 @@ public class GameObject {
         this.x = x;
         this.y = y;
     }
+
+    public void Move(Directions dir) {
+        switch (dir) {
+            case UP:
+                y++;
+                break;
+            case DOWN:
+                y--;
+                break;
+            case LEFT:
+                x--;
+                break;
+            case RIGHT:
+                x++;
+                break;
+        }
+    }
 }
